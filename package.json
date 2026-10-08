@@ -1,0 +1,40 @@
+{
+  "name": "flashcard-ai-studio",
+  "version": "1.0.0",
+  "description": "Flashcard AI Studio Generator",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.flashcard.aistudio",
+    "productName": "Flashcard AI Studio",
+    "win": {
+      "target": ["nsis"],
+      "icon": "icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "NguyenPhuocChung",
+        "repo": "flashcard-ai-studio"
+      }
+    ],
+    "files": [
+      "**/*",
+      "!dist/*"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "electron-updater": "^6.3.9",
+    "electron-log": "^5.2.0"
+  }
+}
