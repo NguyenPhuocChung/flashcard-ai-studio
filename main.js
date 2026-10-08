@@ -1,7 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 app.commandLine.appendSwitch("enable-features", "NetworkServiceInProcess");
 app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
+const { autoUpdater } = require("electron-updater");
+const log = require("electron-log");
 
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
 const path = require("path");
 const fs = require("fs");
 const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
@@ -89,8 +93,33 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
-});
 
+  // Đăng ký sự kiện update
+  autoUpdater.on("update-available", () => {
+    log.info("Có bản cập nhật mới, đang tải...");
+  });
+
+  autoUpdater.on("update-downloaded", () => {
+    const { dialog } = require("electron");
+    dialog
+      .showMessageBox({
+        type: "info",
+        title: "Cập nhật sẵn sàng",
+        message: "Đã tải xong bản cập nhật. Khởi động lại để áp dụng?",
+        buttons: ["Khởi động lại ngay", "Để sau"],
+      })
+      .then((result) => {
+        if (result.response === 0) {
+          autoUpdater.quitAndInstall();
+        }
+      });
+  });
+
+  // Chỉ kiểm tra update khi app đã được đóng gói (không check lúc dev)
+  if (app.isPackaged) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+});
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();

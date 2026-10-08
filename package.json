@@ -1,7 +1,6 @@
 {
   "name": "flashcard-ai-studio",
   "version": "1.0.0",
-  "description": "Flashcard AI Studio Generator",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -23,11 +22,10 @@
     ],
     "files": [
       "**/*",
-      "!dist/*"
+      "!dist/*",
+      "!node_modules/*"
     ]
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8"
